@@ -5,6 +5,9 @@ import 'package:avengers_project/model/user_model.dart';
 import 'package:avengers_project/screens/login/login_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final loginProvider = StateNotifierProvider<LoginStateNotifier, LoginState>(
+    (_) => LoginStateNotifier());
+
 class LoginStateNotifier extends StateNotifier<LoginState> {
   final Future<void> Function()? onLoginSuccessful;
   final Future<void> Function()? onLoginFailed;

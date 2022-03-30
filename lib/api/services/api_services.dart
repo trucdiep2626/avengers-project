@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:avengers_project/components/constants.dart';
 import 'package:avengers_project/model/user_model.dart';
 
@@ -21,9 +22,9 @@ class ApiServices {
     try {
       await account.createSession(email: email, password: password);
 
-      Response response = await account.get() as Response;
-      if (response.data != null) {
-        return UserModel.fromJson(response.data);
+      User user = await account.get();
+      if (user.status == true) {
+        return UserModel.fromJson(user.toMap());
       } else {
         return null;
       }
