@@ -22,6 +22,9 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     result.maybeWhen((data) async {
       String userId = data?.userId ?? '';
       await _saveSession(userId);
+
+      state = state.copyWith(showLoadingIndicator: false, isUserLoggedIn: true);
+
       onLoginSuccessful!();
     }, orElse: () {
       onLoginFailed!();
@@ -30,6 +33,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
   Future<void> logout() async {
     await ApiServices().logout();
+    state = state.copyWith(isUserLoggedIn: false);
     await _destroySession();
   }
 
