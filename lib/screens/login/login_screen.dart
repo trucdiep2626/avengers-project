@@ -1,19 +1,26 @@
-import 'package:avengers_project/components/constants.dart';
 import 'package:avengers_project/components/rounded_button.dart';
 import 'package:avengers_project/components/rounded_input_field.dart';
 import 'package:avengers_project/components/utils.dart';
 import 'package:avengers_project/screens/home/home_screen.dart';
+import 'package:avengers_project/screens/login/login_state.dart';
+import 'package:avengers_project/screens/login/login_state_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatelessWidget with Utils {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends ConsumerWidget with Utils {
+  LoginScreen({Key? key}) : super(key: key);
 
   static String routeName = '/login';
 
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
-    final userNameController = TextEditingController();
-    final passwordController = TextEditingController();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginProvider = StateNotifierProvider<LoginStateNotifier, LoginState>(
+        (_) => LoginStateNotifier(
+            onLoginSuccessful: () async => await _onLoginSuccessful(context),
+            onLoginFailed: () async => _onLoginFailed(context)));
 
     return Scaffold(
       body: SafeArea(
@@ -47,12 +54,25 @@ class LoginScreen extends StatelessWidget with Utils {
               ),
               RoundedButton(
                 label: 'Login',
-                press: () => pushName(context, HomeScreen.routeName),
+                press: () {
+                  ref
+                      .read(loginProvider.notifier)
+                      .login(userNameController.text, passwordController.text);
+                },
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _onLoginSuccessful(BuildContext context) async {
+    pushName(context, HomeScreen.routeName);
+  }
+
+  Future<void> _onLoginFailed(BuildContext context) async {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Login failed!')));
   }
 }
