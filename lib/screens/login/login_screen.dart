@@ -7,16 +7,41 @@ import 'package:avengers_project/screens/login/login_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends ConsumerWidget with Utils {
+import '../../services/fcm_config.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
+  static String routeName = '/login';
+
   LoginScreen({Key? key}) : super(key: key);
 
-  static String routeName = '/login';
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> with Utils {
+  @override
+  void initState() {
+    super.initState();
+    FcmConfig.initMessage(onSelectNotification);
+  }
+
+  void onSelectNotification(String? mess) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Notification"),
+          content: Text("$mess"),
+        );
+      },
+    );
+  }
 
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final loginProvider = StateNotifierProvider<LoginStateNotifier, LoginState>(
         (_) => LoginStateNotifier(
             onLoginSuccessful: () async => await _onLoginSuccessful(context),

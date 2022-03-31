@@ -6,6 +6,17 @@ mixin Utils {
     Navigator.of(context).pushNamed(routeName);
   }
 
+  void pushReplacementNamed(
+      BuildContext context,
+      String routeName, {
+        Object? arguments,
+      }) {
+    Navigator.of(context).pushReplacementNamed(
+      routeName,
+      arguments: arguments,
+    );
+  }
+
   double screenHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }

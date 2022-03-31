@@ -2,10 +2,13 @@ import 'package:avengers_project/components/routes.dart';
 import 'package:avengers_project/screens/home/home_screen.dart';
 import 'package:avengers_project/screens/login/login_screen.dart';
 import 'package:avengers_project/screens/login/login_state_notifier.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
 
