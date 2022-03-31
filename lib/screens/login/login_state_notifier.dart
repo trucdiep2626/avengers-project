@@ -11,6 +11,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   final Future<void> Function()? onLoginSuccessful;
   final Future<void> Function()? onLoginFailed;
 
+
+
   LoginStateNotifier({this.onLoginSuccessful, this.onLoginFailed})
       : super(const LoginState());
 

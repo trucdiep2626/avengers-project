@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:avengers_project/components/utils.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -85,28 +84,6 @@ class FcmConfig with Utils {
     } else {
       log('---Permission notification---: declined or has not accepted');
     }
-  }
-
-  static Future<void> firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-    var androidInit = const AndroidInitializationSettings('mipmap/ic_launcher');
-    var iosInit = const IOSInitializationSettings();
-    var initSetting =
-        InitializationSettings(android: androidInit, iOS: iosInit);
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    flutterLocalNotificationsPlugin.initialize(initSetting);
-
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    log(channel.id + channel.name);
-    if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.cancelAll();
-      showNotification(title: notification.title, body: notification.body);
-    }
-    log("Handling a background message: ${message.messageId}");
   }
 
   static void showNotification({String? title, String? body}) {
