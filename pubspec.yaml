@@ -57,6 +57,23 @@ dependencies:
   # Appwrite
   appwrite: ^4.0.1
 
+  # Riverpod
+  flutter_riverpod: ^1.0.3
+
+  # Code generate
+  freezed: ^1.1.1
+
+  # Api
+  http: ^0.13.4
+  json_annotation: ^4.4.0
+  json_serializable: ^6.1.4
+
+  # Local storage
+  shared_preferences: ^2.0.12
+
+  # Appwrite
+  appwrite: ^4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
