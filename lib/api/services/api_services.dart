@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:avengers_project/api/session/local_storage.dart';
 import 'package:avengers_project/components/constants.dart';
-import 'package:avengers_project/model/user_model.dart';
 
 class ApiServices {
   Client client = Client();
@@ -13,31 +13,51 @@ class ApiServices {
     _initService();
   }
 
-  _initService() {
+  _initService() async {
     account = Account(client);
-    client.setEndpoint(Constants.endpoint).setProject(Constants.projectId);
+    String jwt = await LocalStorage.getAccessToken() ?? '';
+    client
+        .setEndpoint(Constants.endpoint)
+        .setProject(Constants.projectId)
+        .setJWT(jwt);
   }
 
-  Future<UserModel?> login(String email, String password) async {
+  Future<String?> login(String email, String password) async {
     try {
       await account.createSession(email: email, password: password);
 
-      User user = await account.get();
-      if (user.status == true) {
-        return UserModel.fromJson(user.toMap());
-      } else {
-        return null;
-      }
+      final String token = await _createJWT() ?? '';
+
+      return token;
     } catch (e) {
       log(e.toString());
     }
   }
 
-  Future logout() async {
+  Future<void> logout() async {
     try {
       await account.deleteSession(sessionId: 'current');
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  Future<void> changePassword(
+      String currentPassword, String newPassword) async {
+    try {
+      await account.updatePassword(
+          password: newPassword, oldPassword: currentPassword);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<String?> _createJWT() async {
+    try {
+      Jwt jwt = await account.createJWT();
+      return jwt.jwt;
+    } catch (e) {
+      return e.toString();
     }
   }
 }

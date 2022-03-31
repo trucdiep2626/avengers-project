@@ -1,7 +1,6 @@
 import 'package:avengers_project/api/network_state/network_state.dart';
 import 'package:avengers_project/api/services/api_services.dart';
 import 'package:avengers_project/api/session/local_storage.dart';
-import 'package:avengers_project/model/user_model.dart';
 import 'package:avengers_project/screens/login/login_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,8 +19,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
     final result = await _callLoginApi(email, password);
     result.maybeWhen((data) async {
-      String userId = data?.userId ?? '';
-      await _saveSession(userId);
+      await _saveSession(data ?? '');
 
       state = state.copyWith(showLoadingIndicator: false, isUserLoggedIn: true);
 
@@ -37,7 +35,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     await _destroySession();
   }
 
-  Future<NetworkState<UserModel>> _callLoginApi(
+  Future<NetworkState<String?>> _callLoginApi(
       String email, String password) async {
     final result = await ApiServices().login(email, password);
 
@@ -47,8 +45,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     return NetworkState(result);
   }
 
-  Future<void> _saveSession(String userId) async {
-    await LocalStorage.saveAccessToken(userId);
+  Future<void> _saveSession(String token) async {
+    await LocalStorage.saveAccessToken(token);
   }
 
   Future<void> _destroySession() async {
