@@ -8,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreen extends ConsumerWidget with Utils {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   static String routeName = '/login';
 
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNameController = TextEditingController();
-    final passwordController = TextEditingController();
-
     final loginProvider = StateNotifierProvider<LoginStateNotifier, LoginState>(
         (_) => LoginStateNotifier(
             onLoginSuccessful: () async => await _onLoginSuccessful(context),

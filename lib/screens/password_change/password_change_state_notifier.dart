@@ -1,5 +1,4 @@
 import 'package:avengers_project/api/services/api_services.dart';
-import 'package:avengers_project/api/session/local_storage.dart';
 import 'package:avengers_project/screens/password_change/password_change_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,17 +20,11 @@ class PasswordChangeStateNotifier extends StateNotifier<PasswordChangeState> {
     if (newPasswordConfirm == newPassword) {
       await ApiServices().changePassword(currentPassword, newPassword);
 
-      await _destroySession();
-
       state = state.copyWith(showLoadingIndicator: false);
 
       onChangeSuccessful!();
+    } else {
+      onChangeFailed!();
     }
-
-    onChangeFailed!();
-  }
-
-  Future<void> _destroySession() async {
-    await LocalStorage.deleteAccessToken();
   }
 }
