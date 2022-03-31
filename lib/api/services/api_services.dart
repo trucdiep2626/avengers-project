@@ -15,11 +15,11 @@ class ApiServices {
 
   _initService() async {
     account = Account(client);
-    String jwt = await LocalStorage.getAccessToken() ?? '';
+    //String jwt = await LocalStorage.getAccessToken() ?? '';
     client
         .setEndpoint(Constants.endpoint)
-        .setProject(Constants.projectId)
-        .setJWT(jwt);
+        .setProject(Constants.projectId);
+        //.setJWT(jwt);
   }
 
   Future<String?> login(String email, String password) async {
