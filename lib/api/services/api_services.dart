@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:avengers_project/api/session/local_storage.dart';
+import 'package:avengers_project/api/network_state/network_state.dart';
 import 'package:avengers_project/components/constants.dart';
+import 'package:avengers_project/model/user_model.dart';
 
 class ApiServices {
   Client client = Client();
@@ -13,13 +14,11 @@ class ApiServices {
     _initService();
   }
 
-  _initService() async {
+  _initService() {
     account = Account(client);
     //String jwt = await LocalStorage.getAccessToken() ?? '';
-    client
-        .setEndpoint(Constants.endpoint)
-        .setProject(Constants.projectId);
-        //.setJWT(jwt);
+    client.setEndpoint(Constants.endpoint).setProject(Constants.projectId);
+    // .setJWT(jwt);
   }
 
   Future<String?> login(String email, String password) async {
@@ -30,7 +29,7 @@ class ApiServices {
 
       return token;
     } catch (e) {
-      log(e.toString());
+      return e.toString();
     }
   }
 
@@ -49,6 +48,17 @@ class ApiServices {
           password: newPassword, oldPassword: currentPassword);
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  Future<NetworkState<UserModel>> getUserInfo() async {
+    try {
+      final User user = await account.get();
+      final userModel = UserModel.fromJson(user.toMap());
+      return NetworkState<UserModel>(userModel);
+    } catch (e) {
+      log(e.toString());
+      return NetworkState(UserModel());
     }
   }
 

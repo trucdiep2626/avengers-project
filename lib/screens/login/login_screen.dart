@@ -6,13 +6,12 @@ import 'package:avengers_project/screens/login/login_state.dart';
 import 'package:avengers_project/screens/login/login_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../services/fcm_config.dart';
+import 'package:avengers_project/api/services/fcm_config.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String routeName = '/login';
 
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
