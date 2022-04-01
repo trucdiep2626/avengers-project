@@ -19,7 +19,7 @@ class PasswordChangeStateNotifier extends StateNotifier<PasswordChangeState> {
 
     if (newPasswordConfirm == newPassword) {
       await ApiServices().changePassword(currentPassword, newPassword);
-
+      
       state = state.copyWith(showLoadingIndicator: false);
 
       onChangeSuccessful!();

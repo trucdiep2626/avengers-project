@@ -1,3 +1,4 @@
+
 import 'package:avengers_project/components/rounded_button.dart';
 import 'package:avengers_project/components/rounded_input_field.dart';
 import 'package:avengers_project/components/utils.dart';
@@ -6,7 +7,7 @@ import 'package:avengers_project/screens/login/login_state.dart';
 import 'package:avengers_project/screens/login/login_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:avengers_project/api/services/fcm_config.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String routeName = '/login';
@@ -18,27 +19,18 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> with Utils {
-  @override
-  void initState() {
-    super.initState();
-    FcmConfig.initMessage(onSelectNotification);
-  }
-
-  void onSelectNotification(String? mess) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text("Notification"),
-          content: Text("$mess"),
-        );
-      },
-    );
-  }
+ 
 
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  @override
+  void dispose() {
+    
+    super.dispose();
+    userNameController.dispose();
+    passwordController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final loginProvider = StateNotifierProvider<LoginStateNotifier, LoginState>(

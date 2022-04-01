@@ -6,6 +6,7 @@ mixin Utils {
     Navigator.of(context).pushNamed(routeName);
   }
 
+
   void pushReplacementNamed(
       BuildContext context,
       String routeName, {

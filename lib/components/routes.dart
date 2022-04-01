@@ -4,7 +4,7 @@ import 'package:avengers_project/screens/password_change/password_change_screen.
 import 'package:flutter/material.dart';
 
 final Map<String, WidgetBuilder> routes = {
-  LoginScreen.routeName: (_) => LoginScreen(),
+  LoginScreen.routeName: (_) => const LoginScreen(),
   HomeScreen.routeName: (_) => const HomeScreen(),
   PasswordChangeScreen.routeName: (_) => PasswordChangeScreen(),
 };

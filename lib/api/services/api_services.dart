@@ -9,6 +9,7 @@ import 'package:avengers_project/model/user_model.dart';
 class ApiServices {
   Client client = Client();
   late Account account;
+  late Storage storage;
 
   ApiServices() {
     _initService();
@@ -16,20 +17,21 @@ class ApiServices {
 
   _initService() {
     account = Account(client);
-    //String jwt = await LocalStorage.getAccessToken() ?? '';
+    storage = Storage(client);
     client.setEndpoint(Constants.endpoint).setProject(Constants.projectId);
-    // .setJWT(jwt);
+   
   }
 
-  Future<String?> login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     try {
       await account.createSession(email: email, password: password);
 
-      final String token = await _createJWT() ?? '';
+     
 
-      return token;
+      return true;
     } catch (e) {
-      return e.toString();
+      log(e.toString());
+      return false;
     }
   }
 
@@ -54,7 +56,11 @@ class ApiServices {
   Future<NetworkState<UserModel>> getUserInfo() async {
     try {
       final User user = await account.get();
+     
       final userModel = UserModel.fromJson(user.toMap());
+      String fileId= user.prefs.data['id']; 
+      final res = await storage.getFilePreview(bucketId: "624659d39a1ca69da9ce", fileId: fileId,height: 150,width: 150);
+      userModel.avatar= res;
       return NetworkState<UserModel>(userModel);
     } catch (e) {
       log(e.toString());
@@ -62,12 +68,4 @@ class ApiServices {
     }
   }
 
-  Future<String?> _createJWT() async {
-    try {
-      Jwt jwt = await account.createJWT();
-      return jwt.jwt;
-    } catch (e) {
-      return e.toString();
-    }
-  }
 }

@@ -21,7 +21,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
     final result = await _callLoginApi(email, password);
     result.maybeWhen((data) async {
-      await _saveSession(data ?? '');
+      //await _saveSession(data ?? '');
 
       state = state.copyWith(showLoadingIndicator: false, isUserLoggedIn: true);
 
@@ -37,18 +37,14 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
     await _destroySession();
   }
 
-  Future<NetworkState<String?>> _callLoginApi(
+  Future<NetworkState<bool?>> _callLoginApi(
       String email, String password) async {
     final result = await ApiServices().login(email, password);
 
-    if (result == null) {
+    if (result == false) {
       return const NetworkState.error([]);
     }
     return NetworkState(result);
-  }
-
-  Future<void> _saveSession(String token) async {
-    await LocalStorage.saveAccessToken(token);
   }
 
   Future<void> _destroySession() async {
