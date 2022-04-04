@@ -7,6 +7,6 @@ class Constants {
   static const textColor = Color(0xffBE8C63);
 
   // Appwrite constants
-  static const String projectId = '62456e8454629123529a';
-  static const String endpoint = 'http://192.168.50.96:4003/v1';
+  static const String projectId = '624a635d6845fcadbda2';
+  static const String endpoint = 'http://www.appwriteteamav.me/v1';
 }

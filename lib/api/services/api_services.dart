@@ -59,13 +59,17 @@ class ApiServices {
      
       final userModel = UserModel.fromJson(user.toMap());
       String fileId= user.prefs.data['id']; 
-      final res = await storage.getFilePreview(bucketId: "624659d39a1ca69da9ce", fileId: fileId,height: 150,width: 150);
+      final res = await storage.getFilePreview(bucketId: "624a9a1b71ae460c77f5", fileId: fileId,height: 150,width: 150);
       userModel.avatar= res;
       return NetworkState<UserModel>(userModel);
     } catch (e) {
       log(e.toString());
       return NetworkState(UserModel());
     }
+  }
+  Future<Map<String, dynamic>> updatePrefs(Map<String, dynamic> prefs) async{
+    final res = await account.updatePrefs(prefs: prefs);
+    return res.prefs.data;
   }
 
 }
