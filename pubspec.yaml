@@ -71,6 +71,7 @@ dev_dependencies:
   # Code generate
   build_runner: ^2.1.7
   freezed_annotation: ^1.1.0
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

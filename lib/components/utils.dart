@@ -6,16 +6,24 @@ mixin Utils {
     Navigator.of(context).pushNamed(routeName);
   }
 
-
   void pushReplacementNamed(
-      BuildContext context,
-      String routeName, {
-        Object? arguments,
-      }) {
+    BuildContext context,
+    String routeName, {
+    Object? arguments,
+  }) {
     Navigator.of(context).pushReplacementNamed(
       routeName,
       arguments: arguments,
     );
+  }
+
+  bool isValidEmail(String email) {
+    return email.isNotEmpty ||
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  bool isValidPassword(String password) {
+    return password.length >= 8;
   }
 
   double screenHeight(BuildContext context) {

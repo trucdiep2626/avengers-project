@@ -11,8 +11,6 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   final Future<void> Function()? onLoginSuccessful;
   final Future<void> Function()? onLoginFailed;
 
-
-
   LoginStateNotifier({this.onLoginSuccessful, this.onLoginFailed})
       : super(const LoginState());
 
@@ -25,6 +23,8 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
 
       state = state.copyWith(showLoadingIndicator: false, isUserLoggedIn: true);
 
+      await LocalStorage.saveUserStatus(true);
+
       onLoginSuccessful!();
     }, orElse: () {
       onLoginFailed!();
@@ -34,6 +34,7 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   Future<void> logout() async {
     await ApiServices().logout();
     state = state.copyWith(isUserLoggedIn: false);
+    await LocalStorage.deleteUserStatus();
     await _destroySession();
   }
 
@@ -50,4 +51,6 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
   Future<void> _destroySession() async {
     await LocalStorage.deleteAccessToken();
   }
+
+  // TODO: Save-Delete Session
 }

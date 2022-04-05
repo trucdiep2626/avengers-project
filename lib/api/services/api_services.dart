@@ -19,14 +19,11 @@ class ApiServices {
     account = Account(client);
     storage = Storage(client);
     client.setEndpoint(Constants.endpoint).setProject(Constants.projectId);
-   
   }
 
   Future<bool> login(String email, String password) async {
     try {
       await account.createSession(email: email, password: password);
-
-     
 
       return true;
     } catch (e) {
@@ -56,20 +53,21 @@ class ApiServices {
   Future<NetworkState<UserModel>> getUserInfo() async {
     try {
       final User user = await account.get();
-     
+
       final userModel = UserModel.fromJson(user.toMap());
-      String fileId= user.prefs.data['id']; 
-      final res = await storage.getFilePreview(bucketId: "624a9a1b71ae460c77f5", fileId: fileId,height: 150,width: 150);
-      userModel.avatar= res;
+      String fileId = user.prefs.data['id'];
+      final res = await storage.getFilePreview(
+          bucketId: Constants.bucketId, fileId: fileId);
+      userModel.avatar = res;
       return NetworkState<UserModel>(userModel);
     } catch (e) {
       log(e.toString());
       return NetworkState(UserModel());
     }
   }
-  Future<Map<String, dynamic>> updatePrefs(Map<String, dynamic> prefs) async{
+
+  Future<Map<String, dynamic>> updatePrefs(Map<String, dynamic> prefs) async {
     final res = await account.updatePrefs(prefs: prefs);
     return res.prefs.data;
   }
-
 }

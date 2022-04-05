@@ -7,7 +7,9 @@ final homeProvider = StateNotifierProvider<HomeStateNotifier, HomeState>(
     (_) => HomeStateNotifier());
 
 class HomeStateNotifier extends StateNotifier<HomeState> {
-  HomeStateNotifier() : super(const HomeState()){  loadHomeData(); }
+  HomeStateNotifier() : super(const HomeState()) {
+    loadHomeData();
+  }
 
   Future<void> loadHomeData() async {
     state = state.copyWith(data: const NetworkState.loading());
@@ -17,5 +19,4 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
     result.maybeMap((data) => state = state.copyWith(data: data),
         orElse: () {});
   }
-
 }
